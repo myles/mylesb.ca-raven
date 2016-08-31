@@ -1,0 +1,15 @@
+{
+  "xxx-xxx-xxx-xxx" :{
+    "name": "Raven",
+    "domains": ["raven.mylesb.ca"],
+    "email_to": ["Myles Braithwaite <me@mylesb.ca>"]
+  },
+  "xxx-xxx-xxx-xxx": {
+    "name": "MylesB.ca",
+    "domains": ["mylesb.ca"],
+    "email_to": ["Myles Braithwaite <me@mylesb.ca>"],
+    "tpl_subject": "email/mylesb_ca-subject.txt",
+    "tpl_msg_plain": "email/mylesb_ca-text.txt",
+    "tpl_msg_html": "email/mylesb_ca-text.html"
+  }
+}

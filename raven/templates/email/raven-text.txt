@@ -1,0 +1,5 @@
+This email was sent from a contact form on {{ site.name }}.
+
+{{ form.name }} - {{ form.email }}
+
+{{ form.body }}

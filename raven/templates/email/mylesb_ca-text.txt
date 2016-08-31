@@ -1,0 +1,13 @@
+This email was sent from a contact form on *{{ site.name }}*.
+
+Name: {{ form.name }}
+
+Email: <{{ form.email }}>
+
+Inquiry: {{ form.subject }}
+
+{% if form.subject == 'Interested in hiring me for a project' %}Deadline: {{ form.deadline }}
+
+Budget: {{ form.budget }}{% endif %}
+
+{{ form.message }}
