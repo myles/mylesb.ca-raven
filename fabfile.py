@@ -48,7 +48,7 @@ def setup():
             api.run('git clone {0} .'.format(api.env.repo))
 
     # Createh virtual environment.
-    if not exists(api.env.venv_dir):
+    if not exists(os.path.join(api.env.venv_dir, 'bin/python')):
         api.run('virtualenv {0}'.format(api.env.venv_dir))
 
     # Install the dependencies.
