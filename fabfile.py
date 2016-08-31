@@ -95,6 +95,9 @@ def gunicorn_restart():
 
 @api.task
 def ship_it():
+    """
+    Deploy the application.
+    """
     # Check to make sure that there isn't any unchecked files
     git_status = api.local('git status --porcelain', capture=True)
 
@@ -103,6 +106,10 @@ def ship_it():
 
     # Push the repo to the remote
     api.local('git push {0} {1}'.format(api.env.remote, api.env.branch))
+
+    # Put the config.json file on the remote server
+    with api.cd(api.env.proj_dir):
+        api.put('config.json', 'config.json')
 
     # The deploy tasks
     update_code()
