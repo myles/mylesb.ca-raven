@@ -17,12 +17,3 @@ def create_app(configfile=None):
     app.register_blueprint(blueprint_backend, url_prefix='/api')
 
     return app
-
-
-app = create_app()
-
-port = int(os.environ.get("PORT", 5000))
-host = str(os.environ.get("HOST", '0.0.0.0'))
-
-if __name__ == "__main__":
-    app.run(host=host, port=port, debug=True)
