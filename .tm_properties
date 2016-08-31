@@ -1,0 +1,2 @@
+include = "{$include,.editorconfig,.env}"
+exclude = "{$exclude,__pycache__}"
