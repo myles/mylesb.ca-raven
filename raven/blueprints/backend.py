@@ -1,4 +1,4 @@
-from urllib.parse import urlparse
+from six.moves.urllib.parse import urlparse
 
 from flask import (Blueprint, request, render_template, current_app,
                    make_response, jsonify)
