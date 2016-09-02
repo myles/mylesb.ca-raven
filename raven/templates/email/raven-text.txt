@@ -1,5 +1,5 @@
 This email was sent from a contact form on {{ site.name }}.
 
-{{ form.name }} - {{ form.email }}
+{% if form.name %}{{ form.name }} - {% endif %}{{ form.email }}
 
 {{ form.body }}
