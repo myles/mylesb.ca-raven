@@ -28,7 +28,7 @@ def api(site_uuid):
     form = request.form
 
     data = {
-        'from': "Raven <raven@mg.mylesbraithwaite.com>",
+        'from': current_app.config.get('MAILGUN_DEFAULT_FROM'),
         'to': site['email_to'],
     }
 
