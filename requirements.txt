@@ -2,6 +2,7 @@ click==6.6
 dominate==2.2.1
 Flask==0.11.1
 Flask-Bootstrap==3.3.6.0
+Flask-Cors==3.0.1
 Flask-Mailgun==0.4
 Flask-ReCaptcha==0.4.2
 Flask-Script==2.0.5

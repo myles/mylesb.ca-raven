@@ -5,6 +5,9 @@ import json
 class Config(object):
     DEBUG = True
 
+    CORS_ORIGINS = os.environ.get('RAVEN_CORS_ORIGINS', '*')
+    CORS_RESOURCES = r'/api/*'
+
     MAILGUN_DEFAULT_FROM = os.environ.get('RAVEN_MAILGUN_DEFAULT_FROM')
     MAILGUN_DOMAIN = os.environ.get('RAVEN_MAILGUN_DOMAIN')
     MAILGUN_API_KEY = os.environ.get('RAVEN_MAILGUN_API_KEY')

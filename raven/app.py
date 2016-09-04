@@ -11,6 +11,7 @@ def create_app(configfile=None):
 
     app.config.from_object('raven.config.Config')
 
+    cors.init_app(app)
     mailgun.init_app(app)
     recaptcha.init_app(app)
     bootstrap.init_app(app)
