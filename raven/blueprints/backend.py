@@ -3,6 +3,7 @@ from six.moves.urllib.parse import urlparse
 from flask import (Blueprint, request, render_template, current_app,
                    make_response, jsonify)
 
+from raven.utils import get_clearbit_data
 from raven.extensions import recaptcha, mailgun
 
 backend = Blueprint('backend', __name__)
@@ -39,8 +40,8 @@ def api(site_uuid):
     data['text'] = render_template(msg_text_tpl, form=form, site=site)
 
     if site.get('tpl_msg_html', None):
-        data['html'] = render_template(site.get('tpl_msg_html'),
-                                       form=form, site=site)
+        data['html'] = render_template(site.get('tpl_msg_html'), form=form,
+                                       site=site)
 
     mailgun.send_email(**data)
 
