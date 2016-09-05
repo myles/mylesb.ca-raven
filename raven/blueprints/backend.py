@@ -3,6 +3,8 @@ from six.moves.urllib.parse import urlparse
 from flask import (Blueprint, request, render_template, current_app,
                    make_response, jsonify)
 
+from flask_cors import cross_origin
+
 from raven.utils import get_clearbit_data
 from raven.extensions import recaptcha, mailgun
 
@@ -14,6 +16,7 @@ def resp_json(data, code=200):
 
 
 @backend.route('/<string:site_uuid>', methods=['POST'])
+@cross_origin()
 def api(site_uuid):
     raven_config = current_app.config.get('RAVEN_CONFIG')
     site = raven_config.get(site_uuid)
@@ -21,7 +24,8 @@ def api(site_uuid):
     referral = urlparse(request.headers.get("Referer"))
 
     if not referral.netloc in site['domains']:
-        return resp_json({'error': 'Unauthorized referral domain.'}, code=403)
+        return resp_json({'error': 'Unauthorized referral domain '
+                                   '`{}`.'.format(referral.netloc)}, code=403)
 
     if not recaptcha.verify():
         return resp_json({'error': 'reCaptcha failed to verify.'}, code=403)
