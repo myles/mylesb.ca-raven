@@ -16,7 +16,7 @@ def resp_json(data, code=200):
 
 
 @backend.route('/<string:site_uuid>', methods=['POST'])
-@cross_origin()
+@cross_origin(allow_headers=['Content-Type'])
 def api(site_uuid):
     raven_config = current_app.config.get('RAVEN_CONFIG')
     site = raven_config.get(site_uuid)
