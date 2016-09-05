@@ -4,7 +4,7 @@
     <li><span style="color:#ddd">Name:</span> {{ form.name }}</li>
     <li><span style="color:#ddd">Email:</span> <a href="mailto:{{ form.email }}">{{ form.email }}</a></li>
     <li><span style="color:#ddd">Inquiry:</span> {{ form.subject }}</li>
-    {% if form.subject == "Interested in hiring me for a project" %}
+    {% if form.subject == "Interested in Hiring for a Project" %}
     <li><span style="color:#ddd">Deadline:</span> {{ form.deadline }}</li>
     <li><span style="color:#ddd">Budget:</span> {{ form.budget }}{% endif %}</li>
     {% endif %}
