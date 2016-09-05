@@ -6,7 +6,7 @@ Email: <{{ form.email }}>
 
 Inquiry: {{ form.subject }}
 
-{% if form.subject == "Interested in Hiring for a Project" %}Deadline: {{ form.deadline }}
+{% if form['subject'] == 'Interested in Hiring for a Project' %}Deadline: {{ form.deadline }}
 
 Budget: {{ form.budget }}{% endif %}
 
