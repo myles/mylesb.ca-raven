@@ -10,4 +10,4 @@ Inquiry: {{ form.subject }}
 
 Budget: {{ form.budget }}{% endif %}
 
-{{ form.message }}
+{{ form.{{ form.body }} }}
