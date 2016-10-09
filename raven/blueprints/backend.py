@@ -3,12 +3,13 @@ from six.moves.urllib.parse import urlparse
 from flask import (Blueprint, request, render_template, current_app,
                    make_response, jsonify)
 
-from flask_cors import cross_origin
+from flask_cors import CORS, cross_origin
 
 from raven.utils import get_clearbit_data
 from raven.extensions import recaptcha, mailgun
 
 backend = Blueprint('backend', __name__)
+CORS(backend)
 
 
 def resp_json(data, code=200):
