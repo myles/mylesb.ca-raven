@@ -16,6 +16,16 @@ def resp_json(data, code=200):
     return make_response(jsonify(data), code)
 
 
+@backend.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers',
+                         'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,POST,OPTIONS')
+
+    return response
+
+
 @backend.route('/<string:site_uuid>', methods=['POST'])
 @cross_origin(allow_headers=['Content-Type'])
 def api(site_uuid):
@@ -24,7 +34,7 @@ def api(site_uuid):
 
     referral = urlparse(request.headers.get("Referer"))
 
-    if not referral.netloc in site['domains']:
+    if referral.netloc not in site['domains']:
         return resp_json({'error': 'Unauthorized referral domain '
                                    '`{}`.'.format(referral.netloc)}, code=403)
 
