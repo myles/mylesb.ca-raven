@@ -152,7 +152,7 @@ def ship_it():
     pip_upgrade()
     gunicorn_restart()
 
-    register_deployment(api.env.proj_dir)
+    register_deployment('.')
 
     # Draw a ship
     puts("                           |    |    |                           ")
