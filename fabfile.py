@@ -1,4 +1,5 @@
 import os.path
+from os import environ
 
 from fabric import api
 from fabric.utils import puts, abort
@@ -24,6 +25,20 @@ api.env.venv_pip = os.path.join(api.env.venv_dir, 'bin/pip')
 api.env.repo = 'https://github.com/myles/mylesb.ca-raven.git'
 api.env.remote = 'origin'
 api.env.branch = 'master'
+
+api.env.dotenv = {}
+
+with open(os.path.join(os.path.dirname(__file__), '.env'), 'r') as fobj:
+    for line in fobj:
+        line = line.strip()
+
+        if not line or line.startswith('#') or '=' not in line:
+            continue
+
+        k, v = line.split('=', 1)
+        k, v = k.strip(), v.strip()
+
+        api.env.dotenv[k] = v.strip("'")
 
 
 @api.task
@@ -94,6 +109,27 @@ def gunicorn_restart():
 
 
 @api.task
+@api.runs_once
+def register_deployment(git_path):
+    """Register the Deployment with Opbeat."""
+    with(api.lcd(git_path)):
+        opbeat_config = {
+            'revision': api.local('git log -n 1 --pretty="format:%H"',
+                                  capture=True),
+            'branch': api.local('git rev-parse --abbrev-ref HEAD',
+                                capture=True),
+            'org_id': api.env.dotenv['RAVEN_OPBEAT_ORGANIZATION_ID'],
+            'app_id': api.env.dotenv['RAVEN_OPBEAT_APP_ID'],
+            'secret_token': api.env.dotenv['RAVEN_OPBEAT_SECRET_TOKEN']
+        }
+
+        api.local('curl https://intake.opbeat.com/api/v1/organizations/'
+                  '{org_id}/apps/{app_id}/releases/ -H "Authorization: Bearer '
+                  '{secret_token}" -d rev="{revision}" -d branch="{branch}" '
+                  '-d status=completed'.format(**opbeat_config))
+
+
+@api.task
 def ship_it():
     """
     Deploy the application.
@@ -115,6 +151,8 @@ def ship_it():
     update_code()
     pip_upgrade()
     gunicorn_restart()
+
+    register_deployment(api.env.proj_dir)
 
     # Draw a ship
     puts("                           |    |    |                           ")

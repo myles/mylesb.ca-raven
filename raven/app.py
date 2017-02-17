@@ -15,6 +15,7 @@ def create_app(configfile=None):
     mailgun.init_app(app)
     recaptcha.init_app(app)
     bootstrap.init_app(app)
+    opbeat.init_app(app)
 
     app.register_blueprint(blueprint_frontend)
     app.register_blueprint(blueprint_backend, url_prefix='/api')

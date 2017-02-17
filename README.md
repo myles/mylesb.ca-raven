@@ -1,3 +1,3 @@
 # Raven
 
-Easy HTML email forms for statis websites.
+Easy HTML email forms for static websites.
