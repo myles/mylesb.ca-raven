@@ -1,12 +1,31 @@
 <p style="color:#373a3c">This email was sent from a contact form on <strong>{{ site.name }}</strong>.</p>
 
 <ul>
-    <li style="color:#373a3c"><span style="color:#818a91">Name:</span> {{ form.name }}</li>
-    <li style="color:#373a3c"><span style="color:#818a91">Email:</span> <a href="mailto:{{ form.email }}" style="color:#0275d8;text-decoration:none">{{ form.email }}</a></li>
-    <li style="color:#373a3c"><span style="color:#818a91">Inquiry:</span> {{ form.subject }}</li>
-    {%- if form['subject'] == 'I'm interested in hiring you for a project' -%}
-    <li style="color:#373a3c"><span style="color:#818a91">Deadline:</span> {{ form.deadline }}</li>
-    <li style="color:#373a3c"><span style="color:#818a91">Budget:</span> {{ form.budget }}</li>
+    <li style="color:#373a3c">
+        <span style="color:#818a91">Name:</span>
+        {{ form.name }}
+    </li>
+
+    <li style="color:#373a3c">
+        <span style="color:#818a91">Email:</span>
+        <a href="mailto:{{ form.email }}" style="color:#0275d8;text-decoration:none">{{ form.email }}</a>
+    </li>
+
+    <li style="color:#373a3c">
+        <span style="color:#818a91">Inquiry:</span>
+        {{ form.subject }}
+    </li>
+
+    {%- if form['subject'] == "I'm interested in hiring you for a project" -%}
+    <li style="color:#373a3c">
+        <span style="color:#818a91">Deadline:</span>
+        {{ form.deadline }}
+    </li>
+
+    <li style="color:#373a3c">
+        <span style="color:#818a91">Budget:</span>
+        {{ form.budget }}
+    </li>
     {% endif %}
 </ul>
 
