@@ -16,18 +16,9 @@ def resp_json(data, code=200):
     return make_response(jsonify(data), code)
 
 
-@backend.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers',
-                         'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,POST,OPTIONS')
-
-    return response
-
-
 @backend.route('/<string:site_uuid>', methods=['POST'])
-@cross_origin(allow_headers=['Content-Type'])
+@cross_origin(origins='*', methods=['POST'], send_wildcard=True,
+              allow_headers=['Accept', 'Content-Type', 'X-Requested-With'])
 def api(site_uuid):
     raven_config = current_app.config.get('RAVEN_CONFIG')
     site = raven_config.get(site_uuid)
