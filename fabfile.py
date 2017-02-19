@@ -73,11 +73,17 @@ def setup():
     # Install the dependencies.
     pip_upgrade()
 
+    # Put the enovirment vairables on the server.
+    with api.cd(api.env.proj_dir):
+        api.put('.env', '.env')
+
     # Setup supervisord service
     with api.cd(api.env.proj_dir):
-        api.sudo('foreman export --app={supervisord_name} --root={proj_dir} '
-                 'supervisord /etc/supervisor/conf.d'.format(**api.env))
+        api.sudo('foreman export --user=myles --app={supervisord_name} '
+                 '--root={proj_dir} --log={logs_dir} --port=5001 supervisord '
+                 '/etc/supervisor/conf.d'.format(**api.env))
 
+    # Load and start the supervisord config.
     supervisor('load')
     supervisor('start')
 

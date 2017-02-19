@@ -1,1 +1,1 @@
-web: gunicorn raven:app --log-file -
+web: gunicorn raven.app:app --log-file -
