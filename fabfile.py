@@ -64,7 +64,8 @@ def setup():
 
     # Createh virtual environment.
     if not exists(os.path.join(api.env.venv_dir, 'bin/python')):
-        api.run('virtualenv {0}'.format(api.env.venv_dir))
+        api.run('virtualenv --python=/usr/bin/python3.4 '
+                '{0}'.format(api.env.venv_dir))
 
     # Install the dependencies.
     pip_upgrade()
