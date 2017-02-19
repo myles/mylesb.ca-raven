@@ -46,6 +46,9 @@ def setup():
     """
     Setup the deploy server.
     """
+    supervisor('stop', warn_only=True)
+    supervisor('remove', warn_only=True)
+
     # Make a bunch of the directories.
     api.sudo('mkdir -p {0}'.format(' '.join([api.env.proj_dir,
                                              api.env.logs_dir,
@@ -60,15 +63,23 @@ def setup():
     if not exists(os.path.join(api.env.proj_dir, '.git')):
         # Clone the GitHub Repo
         with api.cd(api.env.proj_dir):
-            api.run('git clone {0} .'.format(api.env.repo))
+            api.run('git clone {repo} .'.format(**api.env))
 
     # Createh virtual environment.
     if not exists(os.path.join(api.env.venv_dir, 'bin/python')):
-        api.run('virtualenv --python=/usr/bin/python3.4 '
-                '{0}'.format(api.env.venv_dir))
+        api.run('virtualenv '
+                '--python=/usr/bin/python3.4 {venv_dir}'.format(**api.env))
 
     # Install the dependencies.
     pip_upgrade()
+
+    # Setup supervisord service
+    with api.cd(api.env.proj_dir):
+        api.sudo('foreman export --app={supervisord_name} --root={proj_dir} '
+                 'supervisord /etc/supervisor/conf.d'.format(**api.env))
+
+    supervisor('load')
+    supervisor('start')
 
 
 @api.task
@@ -77,7 +88,7 @@ def python_version():
     Return the Python version on the server for testing.
     """
     with api.cd(api.env.proj_dir):
-        api.run("{0} -V".format(api.env.venv_python))
+        api.run("{venv_python} -V".format(**api.env))
 
 
 @api.task
@@ -87,8 +98,8 @@ def update_code():
     """
     with api.cd(api.env.proj_dir):
         api.run('git reset --hard HEAD')
-        api.run('git checkout {0}'.format(api.env.branch))
-        api.run('git pull {0} {1}'.format(api.env.remote, api.env.branch))
+        api.run('git checkout {branch}'.format(**api.env))
+        api.run('git pull {remote} {branch}'.format(**api.env))
 
 
 @api.task
@@ -97,16 +108,17 @@ def pip_upgrade():
     Upgrade the third party Python libraries.
     """
     with api.cd(api.env.proj_dir):
-        api.run('{0} install --upgrade -r '
-                'requirements.txt'.format(api.env.venv_pip))
+        api.run('{venv_pip} install --upgrade -r '
+                'requirements.txt'.format(**api.env))
 
 
 @api.task
-def gunicorn_restart():
-    """
-    Restart the supervisord process.
-    """
-    api.sudo('supervisorctl restart {0}'.format(api.env.supervisord_name))
+def supervisor(command, warn_only=False):
+    """Interact with the supervisord process."""
+    name = api.env.supervisord_name
+    api.sudo('supervisorctl {command} {name}'.format(command=command,
+                                                     name=name),
+             warn_only=warn_only)
 
 
 @api.task
@@ -142,7 +154,7 @@ def ship_it():
         abort('There are unchecked files.')
 
     # Push the repo to the remote
-    api.local('git push {0} {1}'.format(api.env.remote, api.env.branch))
+    api.local('git push {remote} {branch}'.format(**api.env))
 
     # Put the config.json file on the remote server
     with api.cd(api.env.proj_dir):
@@ -151,7 +163,7 @@ def ship_it():
     # The deploy tasks
     update_code()
     pip_upgrade()
-    gunicorn_restart()
+    supervisor('restart')
 
     register_deployment('.')
 
