@@ -1,0 +1,13 @@
+Flask
+
+# Flask Libraries
+Flask-Bootstrap
+Flask-Cors
+Flask-Mailgun
+Flask-ReCaptcha
+Flask-Script
+Flask-DotEnv
+
+gunicorn
+opbeat[flask]
+clearbit
