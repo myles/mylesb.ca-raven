@@ -7,11 +7,11 @@ Flask = "*"
 Flask-Bootstrap = "*"
 Flask-Cors = "*"
 Flask-Mailgun = "*"
-Flask-ReCaptcha = "*"
 Flask-Script = "*"
 Flask-DotEnv = "*"
 gunicorn = "*"
 clearbit = "*"
+Flask-reCaptcha = "*"
 
 [packages.opbeat]
 extras = [ "flask",]
